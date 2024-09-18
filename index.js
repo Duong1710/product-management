@@ -1,6 +1,9 @@
 const express = require('express')
-const app = express()
-const port = 4000 
+
+require('dotenv').config();
+
+const app = express();
+const port = process.env.PORT;
  const routeClient = require("./routes/client/index.route");
 
 app.set('views', './views') // tìm tđến thư mục tên là views
