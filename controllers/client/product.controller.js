@@ -1,5 +1,9 @@
 module.exports.index = (req, res) => {
-    res.render("client/pages/products/index")
+    res.render("client/pages/products/index",
+        {
+            pageTitle : "Danh sách sản phẩm"
+        }
+    )
 };
 
 module.exports.create = (req, res) => {
