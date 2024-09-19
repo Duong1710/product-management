@@ -4,6 +4,8 @@ require('dotenv').config();
 
 const app = express(); 
 const port = process.env.PORT;
+const databse = require("./config/database");
+databse.connect();
  const routeClient = require("./routes/client/index.route");
  app.use(express.static('public')); // Thiết lập thư mục chứa file tĩnh
 
