@@ -8,9 +8,12 @@ const port = process.env.PORT; // gọi cổng
 
 const databse = require("./config/database"); //kết nối database
 databse.connect(); // Kết nối database
+const routeAdmin = require("./routes/admin/index.route"); // Gọi đường dẫn đến file index.route bên admin
+const routeClient = require("./routes/client/index.route"); // Gọi đường dẫn đến file index.route bên client
 
-const routeClient = require("./routes/client/index.route"); // Gọi đường dẫn đến file index.route
+routeAdmin.index(app)
 routeClient.index(app)
+
 app.use(express.static('public')); // Thiết lập thư mục chứa file tĩnh
 
 app.set('views', './views') // tìm tđến thư mục tên là views
