@@ -21,10 +21,30 @@ module.exports.index = async (req, res) => {
   // nếu mà trên cái dòng tìm localhost ấy sau
   //   dấu ? có cái giá trị của keyword thì biến const find bên trên chỗ index
   //   kia kìa sẽ có thêm cái giá trị title và người ta sẽ lọc theo cái title đó
-  const products = await Product.find(find);
+
+  // Tình năng phân trang
+  let limitItems = 4;
+  let page = 1;
+
+  if(req.query.page){
+    page = parseInt(req.query.page);
+  }
+
+  if(req.query.limit){
+    limitItems = parseInt(req.query.limit);
+  }
+
+  const skip = (page -1) * limitItems; 
+  const totalProduct = await Product.countDocuments(find);
+  const totalPage = Math.ceil(totalProduct/limitItems);
+  // Hết tính năng phân trang
+
+  const products = await Product.find(find).limit(limitItems).skip(skip);
 
   res.render("admin/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
-    products : products
+    products : products,
+    totalPage: totalPage,
+    currentPage: page
   });
 }
