@@ -26,11 +26,11 @@ module.exports.index = async (req, res) => {
   let limitItems = 4;
   let page = 1;
 
-  if(req.query.page){
+  if(req.query.page){ // chính là mấy cái chữ trên dòng tìm kiếm là chữ page á
     page = parseInt(req.query.page);
   }
 
-  if(req.query.limit){
+  if(req.query.limit){ // là giá trị của chữ limit trên dòng tìm kiếm á, nếu có thì gán giá trị liền
     limitItems = parseInt(req.query.limit);
   }
 
@@ -47,4 +47,18 @@ module.exports.index = async (req, res) => {
     totalPage: totalPage,
     currentPage: page
   });
+}
+// Thay đổi trạng thái
+module.exports.changeStatus = async (req, res) => {
+  await Product.updateOne({
+    _id: req.body.id // tìm đối tượng có id là id của nút mình thay đổi
+  }, {
+    status: req.body.status // cập nhật lại trạng thái cho đối tượng mình bấm vào
+  });
+  // thay đổi dữ liệu trong bảng products trong mongoDB
+  res.json({
+    code: "success", 
+    message: "Đổi trạng thái thành công!"
+  });
+  // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
 }

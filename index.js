@@ -1,5 +1,5 @@
 const express = require('express') // kết nối express
-
+const bodyParser = require('body-parser')
 require('dotenv').config(); // kết nối .evn
 const systemConfig = require("./config/system");
 const app = express();
@@ -12,6 +12,9 @@ const routeClient = require("./routes/client/index.route"); // Gọi đường d
 
 // Khai báo biến toàn cục cho file pug
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+
+// parse application/json
+app.use(bodyParser.json())
 
 // Khai báo đường dẫn
 routeAdmin.index(app)
