@@ -167,7 +167,7 @@ if(listButtonDelete.length > 0){
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    method : "DELETE", // phương thức patch cho phép cơ sở dữ liệu cập nhật dữ liệu
+                    method : "PATCH", // phương thức patch cho phép cơ sở dữ liệu cập nhật dữ liệu
                     body : JSON.stringify(data) 
                     // front-end gửi dữ liệu cho back end thì phải đổi dữ liệu thành dạng json
                 })
@@ -183,3 +183,5 @@ if(listButtonDelete.length > 0){
         })
     })
 }
+// Xóa vĩnh viễn khác với xóa mềm ở chỗ method, xóa mềm chỉ là PATCH để cập nhật lại trạng thái của thuộc tính deleted thôi
+// việc cập nhật này thì lại phải sửa đổi theo đường link, cụ thể sẽ sửa ở mục controller

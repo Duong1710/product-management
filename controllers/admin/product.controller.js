@@ -82,8 +82,10 @@ module.exports.changeMulti = async (req, res) => {
 
 // Xóa vĩnh viễn 1 sản phẩm
 module.exports.delete = async (req, res) => {
-  await Product.deleteOne({
+  await Product.updateOne({
     _id: req.body.id
+  },{
+    deleted : true // cập nhật lại thuộc tính deleted bằng true với tính năng xóa mềm
   });
   // xóa sản phẩm theo id của FE truyền vào BE
   res.json({
