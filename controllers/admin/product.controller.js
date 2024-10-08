@@ -62,3 +62,17 @@ module.exports.changeStatus = async (req, res) => {
   });
   // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
 }
+
+module.exports.changeMulti = async (req, res) => {
+  await Product.updateMany({
+    _id: req.body.ids // tìm đối tượng có id là id của nút mình thay đổi
+  }, {
+    status: req.body.status // cập nhật lại trạng thái cho đối tượng mình bấm vào
+  });
+  // thay đổi dữ liệu trong bảng products trong mongoDB
+  res.json({
+    code: "success", 
+    message: "Đổi trạng thái thành công!"
+  });
+  // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
+}

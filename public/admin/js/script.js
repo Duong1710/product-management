@@ -88,7 +88,7 @@ if(listButtonChangeStatus.length > 0){ //check chắc chắn rằng có nút tr�
                 status : statusChange
             }
             // gom vào thành 1 object
-            // front-end gửi dữ liệu cho back-end qua đường dẫn dưới
+            // front-end gửi dữ liệu cho back-end qua đường dẫn dưới, tạo đường dẫn để BE và FE tương tác với nhau
             fetch(path, { // đường dẫn kia thì chúng ta phải tạo 1 đường dẫn mới trong file routes
                 headers: {
                     "Content-Type": "application/json",
@@ -101,10 +101,52 @@ if(listButtonChangeStatus.length > 0){ //check chắc chắn rằng có nút tr�
                 // back-end có phản hồi thì đây là đoạn code giúp front-end
                 // chuyển json thành js
                 .then(data => {
-                    if(data.code == "success"){ // 
+                    if(data.code == "success"){ // nếu back end phản hồi thành công thì thuộc tính code = success 
                         location.reload(); // load lại trang
                     }
                 })
         })
     })
 }
+// Hết đổi trạng thái cho 1 bản ghi
+
+
+// Đổi trạng thái cho nhiều bản ghi
+const formChangeMulti = document.querySelector("[form-change-multi]"); // lấy ra nút submit ấy
+if(formChangeMulti){
+    formChangeMulti.addEventListener("submit", (event) => { // gán sự kiện submit
+        event.preventDefault(); // ngăn chặn việc mở 1 trang, đường dẫn mới khi submit
+        const status = formChangeMulti.status.value; // lấy ra status của sản phẩm
+
+        const path = formChangeMulti.getAttribute("data-path"); // lấy ra đường dẫn mà BE tương tác với FE
+
+        const ids = []; // mảng để lưu đường link của các sản phẩm được chọn thông qua cái listInputChangeChecked bên dưới
+        const listInputChangeChecked = document.querySelectorAll("[input-change]:checked"); // lấy ra toàn bộ các nút được chọn, được tick vào
+        listInputChangeChecked.forEach(input => {
+            const id = input.getAttribute("input-change");
+            ids.push(id);
+        })
+        const data = {
+            ids : ids,
+            status : status
+        };
+
+        fetch(path, { // đường dẫn kia thì chúng ta phải tạo 1 đường dẫn mới trong file routes
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method : "PATCH", // phương thức patch cho phép cơ sở dữ liệu cập nhật dữ liệu
+            body : JSON.stringify(data) 
+            // front-end gửi dữ liệu cho back end thì phải đổi dữ liệu thành dạng json
+        })
+            .then(res => res.json()) 
+            // back-end có phản hồi thì đây là đoạn code giúp front-end
+            // chuyển json thành js
+            .then(data => {
+                if(data.code == "success"){ // nếu back end phản hồi thành công thì thuộc tính code = success 
+                    location.reload(); // load lại trang
+                }
+            })
+    })
+}
+// Hết đổi trạng thái cho nhiều bản ghi
