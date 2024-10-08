@@ -48,7 +48,7 @@ module.exports.index = async (req, res) => {
     currentPage: page
   });
 }
-// Thay đổi trạng thái
+// Thay đổi trạng thái 1 sản phẩm
 module.exports.changeStatus = async (req, res) => {
   await Product.updateOne({
     _id: req.body.id // tìm đối tượng có id là id của nút mình thay đổi
@@ -62,7 +62,9 @@ module.exports.changeStatus = async (req, res) => {
   });
   // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
 }
+// Hết thay đổi trạng thái 1 sản phẩm
 
+// Thay đổi trạng thái nhiều sản phẩm
 module.exports.changeMulti = async (req, res) => {
   await Product.updateMany({
     _id: req.body.ids // tìm đối tượng có id là id của nút mình thay đổi
@@ -70,6 +72,20 @@ module.exports.changeMulti = async (req, res) => {
     status: req.body.status // cập nhật lại trạng thái cho đối tượng mình bấm vào
   });
   // thay đổi dữ liệu trong bảng products trong mongoDB
+  res.json({
+    code: "success", 
+    message: "Đổi trạng thái thành công!"
+  });
+  // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
+}
+// Hết thay đổi trạng thái nhiều sản phẩm
+
+// Xóa vĩnh viễn 1 sản phẩm
+module.exports.delete = async (req, res) => {
+  await Product.deleteOne({
+    _id: req.body.id
+  });
+  // xóa sản phẩm theo id của FE truyền vào BE
   res.json({
     code: "success", 
     message: "Đổi trạng thái thành công!"

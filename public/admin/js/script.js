@@ -150,3 +150,36 @@ if(formChangeMulti){
     })
 }
 // Hết đổi trạng thái cho nhiều bản ghi
+
+// Tính năng xóa sản phẩm
+const listButtonDelete = document.querySelectorAll("[button-delete]");
+if(listButtonDelete.length > 0){
+    listButtonDelete.forEach(button => {
+        button.addEventListener("click", () => {
+            const isConfirm = confirm("Bạn có chắc muốn xóa bản ghi này?");
+            if(isConfirm){
+                const id = button.getAttribute("item-id");
+                const path = button.getAttribute("data-path");
+                const data = {
+                    id : id
+                }
+                fetch(path, { // đường dẫn kia thì chúng ta phải tạo 1 đường dẫn mới trong file routes
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method : "DELETE", // phương thức patch cho phép cơ sở dữ liệu cập nhật dữ liệu
+                    body : JSON.stringify(data) 
+                    // front-end gửi dữ liệu cho back end thì phải đổi dữ liệu thành dạng json
+                })
+                    .then(res => res.json()) 
+                    // back-end có phản hồi thì đây là đoạn code giúp front-end
+                    // chuyển json thành js
+                    .then(data => {
+                        if(data.code == "success"){ // nếu back end phản hồi thành công thì thuộc tính code = success 
+                            location.reload(); // load lại trang
+                        }
+                    })
+            }
+        })
+    })
+}
