@@ -151,7 +151,7 @@ if(formChangeMulti){
 }
 // Hết đổi trạng thái cho nhiều bản ghi
 
-// Tính năng xóa sản phẩm
+// Tính năng xóa sản phẩm - xóa mềm
 const listButtonDelete = document.querySelectorAll("[button-delete]");
 if(listButtonDelete.length > 0){
     listButtonDelete.forEach(button => {
@@ -185,3 +185,73 @@ if(listButtonDelete.length > 0){
 }
 // Xóa vĩnh viễn khác với xóa mềm ở chỗ method, xóa mềm chỉ là PATCH để cập nhật lại trạng thái của thuộc tính deleted thôi
 // việc cập nhật này thì lại phải sửa đổi theo đường link, cụ thể sẽ sửa ở mục controller
+
+// TÍNH NĂNG CỦA TRASH
+// Tính năng xóa sản phẩm - xóa vĩnh viễn (trash)
+const listButtonDeletePermanent = document.querySelectorAll("[button-delete-permanent]");
+if(listButtonDeletePermanent.length > 0){
+    listButtonDeletePermanent.forEach(button => {
+        button.addEventListener("click", () => {
+            const isConfirm = confirm("Bạn có chắc muốn xóa vĩnh viễn bản ghi này?");
+            if(isConfirm){
+                const id = button.getAttribute("item-id");
+                const path = button.getAttribute("data-path");
+                const data = {
+                    id : id
+                }
+                fetch(path, { // đường dẫn kia thì chúng ta phải tạo 1 đường dẫn mới trong file routes, chính là đường dẫn tương tác giữa FE và BE
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method : "DELETE", // phương thức delete cho phép cơ sở dữ liệu xóa hẳn dữ liệu
+                    body : JSON.stringify(data) 
+                    // front-end gửi dữ liệu cho back end thì phải đổi dữ liệu thành dạng json, dữ liệu chính là cái đối tượng data kia kìa
+                })
+                    .then(res => res.json()) 
+                    // back-end có phản hồi thì đây là đoạn code giúp front-end
+                    // chuyển json thành js
+                    .then(data => {
+                        if(data.code == "success"){ // nếu back end phản hồi thành công thì thuộc tính code = success 
+                            location.reload(); // load lại trang
+                        }
+                    })
+            }
+        })
+    })
+}
+// Xóa vĩnh viễn khác với xóa mềm ở chỗ method, xóa mềm chỉ là PATCH để cập nhật lại trạng thái của thuộc tính deleted thôi
+// việc cập nhật này thì lại phải sửa đổi theo đường link, cụ thể sẽ sửa ở mục controller
+// Hết xóa vĩnh viễn
+
+// Tính năng Khôi phục sản phẩm
+const listRestoreButton = document.querySelectorAll("[button-restore]");
+if(listRestoreButton.length > 0){
+    listRestoreButton.forEach(button => {
+        button.addEventListener("click", () => {
+            const isConfirm = confirm("Bạn muốn khôi phục bản ghi này chứ ?");
+            if(isConfirm){
+                const id = button.getAttribute("item-id");
+                const path = button.getAttribute("data-path");
+                const data = {
+                    id : id
+                }
+                fetch(path, { // đường dẫn kia thì chúng ta phải tạo 1 đường dẫn mới trong file routes, đây là đường dẫn để tương tác giữa FE và BE đó
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method : "PATCH", // phương thức patch cho phép cơ sở dữ liệu cập nhật dữ liệu
+                    body : JSON.stringify(data) 
+                    // front-end gửi dữ liệu cho back end thì phải đổi dữ liệu thành dạng json
+                })
+                    .then(res => res.json()) 
+                    // back-end có phản hồi thì đây là đoạn code giúp front-end
+                    // chuyển json thành js
+                    .then(data => {
+                        if(data.code == "success"){ // nếu back end phản hồi thành công thì thuộc tính code = success 
+                            location.reload(); // load lại trang
+                        }
+                    })
+            }
+        })
+    })
+}

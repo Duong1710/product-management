@@ -1,0 +1,69 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-filter.pug
+
+block main
+  h1 Danh sách sản phẩm
+  .card.mb-3
+    .card-header Tìm kiếm sản phẩm
+    .card-body
+      .row
+        .col-12
+          include ../../partials/form-search.pug
+  .card
+    .card-header Danh sách
+    .card-body
+      table.table.table-hover.table-sm
+        thead
+          tr
+            th
+            th STT
+            th Hình ảnh
+            th Tiêu đề
+            th Giá
+            th Hành động
+        tbody
+          each item, index in products
+            tr
+              td
+                input(
+                  type="checkbox"
+                  input-change=item.id
+                )
+              td #{index + 1}
+              td
+                img(
+                  src=item.thumbnail
+                  alt=item.title
+                  width="100px"
+                  height="auto"
+                )
+              td #{item.title}
+              td #{item.price}$
+              td
+                button(
+                    class="btn btn-success btn-sm"
+                    item-id=item.id 
+                    button-restore 
+                    data-path = `/${prefixAdmin}/products/restore`
+                    ) Khôi phục
+                button(
+                  class="btn btn-danger btn-sm ml-1"
+                  item-id=item.id 
+                  button-delete-permanent 
+                  data-path=`/${prefixAdmin}/products/delete-permanent`
+                  ) Xóa vĩnh viễn
+
+  nav(class="mt-3")
+    ul(class="pagination")
+      if(currentPage > 1)
+        li(class="page-item")
+          button(class="page-link" button-pagination=currentPage-1) Trang trước
+
+      - for (var i = 1; i <= totalPage; i++)
+        li(class="page-item")
+          button(class="page-link" button-pagination=i) #{i}
+
+      if(currentPage < totalPage)
+        li(class="page-item")
+          button(class="page-link" button-pagination=currentPage+1) Kế tiếp
+              
