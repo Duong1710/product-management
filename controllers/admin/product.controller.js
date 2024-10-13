@@ -48,6 +48,7 @@ module.exports.index = async (req, res) => {
     currentPage: page
   });
 }
+
 // Thay đổi trạng thái 1 sản phẩm
 module.exports.changeStatus = async (req, res) => {
   await Product.updateOne({
@@ -66,17 +67,69 @@ module.exports.changeStatus = async (req, res) => {
 
 // Thay đổi trạng thái nhiều sản phẩm
 module.exports.changeMulti = async (req, res) => {
-  await Product.updateMany({
-    _id: req.body.ids // tìm đối tượng có id là id của nút mình thay đổi
-  }, {
-    status: req.body.status // cập nhật lại trạng thái cho đối tượng mình bấm vào
-  });
-  // thay đổi dữ liệu trong bảng products trong mongoDB
-  res.json({
-    code: "success", 
-    message: "Đổi trạng thái thành công!"
-  });
-  // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
+  switch (req.body.status) {
+    case 'active':
+    case 'inactive':
+      await Product.updateMany({
+        _id: req.body.ids // tìm đối tượng có id là id của nút mình thay đổi
+      }, {
+        status: req.body.status // cập nhật lại trạng thái cho đối tượng mình bấm vào
+      });
+      // thay đổi dữ liệu trong bảng products trong mongoDB
+      res.json({
+        code: "success", 
+        message: "Đổi trạng thái thành công!"
+      });
+      // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
+      break;
+
+    case 'delete':
+      await Product.updateMany({
+        _id: req.body.ids // tìm đối tượng có id là id của nút mình thay đổi
+      }, {
+        deleted : true // xóa mềm bản ghi
+      });
+      // thay đổi dữ liệu trong bảng products trong mongoDB
+      res.json({
+        code: "success", 
+        message: "Xóa mềm thành công!"
+      });
+      // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
+      break;
+
+    case 'restore':
+      await Product.updateMany({
+        _id: req.body.ids // tìm đối tượng có id là id của nút mình thay đổi
+      }, {
+        deleted : false // khôi phục bản ghi
+      });
+      // thay đổi dữ liệu trong bảng products trong mongoDB
+      res.json({
+        code: "success", 
+        message: "Khôi phục thành công!"
+      });
+      // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
+      break;  
+
+    case 'restore':
+      await Product.deleteMany({
+        _id: req.body.ids // tìm đối tượng có id là id của nút mình thay đổi
+      });
+      // thay đổi dữ liệu trong bảng products trong mongoDB
+      res.json({
+        code: "success", 
+        message: "Xóa vĩnh viễn thành công!"
+      });
+      // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
+      break;  
+    default:
+      res.json({
+        code: "error",
+        message: "Trạng thái không hợp lệ!"
+      });
+      // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
+      break;
+  }
 }
 // Hết thay đổi trạng thái nhiều sản phẩm
 

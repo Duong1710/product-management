@@ -12,6 +12,21 @@ block main
   .card
     .card-header Danh sách
     .card-body
+      .row.mb-3
+        .col-6
+          form(
+            form-change-multi
+            data-path = `/${prefixAdmin}/products/change-multi`
+            )
+            .input-group
+              select(name="status" class="form-control")
+                option(value="restore") Khôi phuc
+                option(value="delete-permanent") Xóa vĩnh viễn
+              .input-group-append
+                button(
+                  class="btn btn-success"
+                  type="submit"
+                ) Áp dụng
       table.table.table-hover.table-sm
         thead
           tr
