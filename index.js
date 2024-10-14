@@ -1,5 +1,10 @@
 const express = require('express') // kết nối express
 const bodyParser = require('body-parser')
+// Cụm express-flash
+const flash = require('express-flash');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+// hết cụm
 require('dotenv').config(); // kết nối .evn
 const systemConfig = require("./config/system");
 const app = express();
@@ -14,7 +19,12 @@ const routeClient = require("./routes/client/index.route"); // Gọi đường d
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+//Dùng express-flash
+app.use(cookieParser('JKSLSF'));
+app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(flash());
 
 // Khai báo đường dẫn
 routeAdmin.index(app)

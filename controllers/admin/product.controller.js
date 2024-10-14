@@ -63,9 +63,9 @@ module.exports.changeStatus = async (req, res) => {
     status: req.body.status // cập nhật lại trạng thái cho đối tượng mình bấm vào
   });
   // thay đổi dữ liệu trong bảng products trong mongoDB
+  req.flash('success', 'Đổi trạng thái thành công!'); // Tương tác của express-flash
   res.json({
-    code: "success", 
-    message: "Đổi trạng thái thành công!"
+    code: "success"
   });
   // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
 }
@@ -82,8 +82,9 @@ module.exports.changeMulti = async (req, res) => {
         status: req.body.status // cập nhật lại trạng thái cho đối tượng mình bấm vào
       });
       // thay đổi dữ liệu trong bảng products trong mongoDB
+      req.flash('success', 'Đổi trạng thái thành công!');
       res.json({
-        code: "success", 
+        code: "success",
         message: "Đổi trạng thái thành công!"
       });
       // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
@@ -96,9 +97,9 @@ module.exports.changeMulti = async (req, res) => {
         deleted : true // xóa mềm bản ghi
       });
       // thay đổi dữ liệu trong bảng products trong mongoDB
+      req.flash('success', `Xóa mềm thành công!`);
       res.json({
-        code: "success", 
-        message: "Xóa mềm thành công!"
+        code: "success"
       });
       // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
       break;
@@ -110,21 +111,21 @@ module.exports.changeMulti = async (req, res) => {
         deleted : false // khôi phục bản ghi
       });
       // thay đổi dữ liệu trong bảng products trong mongoDB
+      req.flash('success', "Khôi phục thành công!");
       res.json({
-        code: "success", 
-        message: "Khôi phục thành công!"
+        code: "success"
       });
       // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
       break;  
 
-    case 'restore':
+    case 'delete-permanent':
       await Product.deleteMany({
         _id: req.body.ids // tìm đối tượng có id là id của nút mình thay đổi
       });
       // thay đổi dữ liệu trong bảng products trong mongoDB
+      req.flash('success', "Xóa vĩnh viễn thành công!");
       res.json({
-        code: "success", 
-        message: "Xóa vĩnh viễn thành công!"
+        code: "success"
       });
       // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
       break;  
@@ -243,10 +244,9 @@ module.exports.changePosition = async (req, res) => {
   }, {
     position: req.body.position
   });
-
+  req.flash('success', "Đổi vị trí thành công!");
   res.json({
-    code: "success",
-    message: "Đổi vị trí thành công!"
+    code: "success"
   });
 }
 // Hết đổi vị trí
