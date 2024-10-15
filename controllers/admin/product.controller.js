@@ -250,3 +250,18 @@ module.exports.changePosition = async (req, res) => {
   });
 }
 // Hết đổi vị trí
+
+// Tạo trang sản phẩm mới
+module.exports.create = async (req, res) => {
+  res.render("admin/pages/products/create", {
+    pageTitle: "Thêm mới sản phẩm"
+  });
+}
+// Hết tạo trang sản phẩm mới
+
+//Submit form tạo mới 1 sản phẩm
+module.exports.createPost = async (req, res) => {
+  console.log(req.body); // lấy dữ liệu từ FE khi bấm nút tạo mới in ra bên BE
+
+  res.send("OK");// trả lại BE gửi lên FE, hiển thị trên màn hình
+}

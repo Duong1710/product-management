@@ -11,5 +11,8 @@ router.patch("/change-position", controller.changePosition);
 // Đường dẫn cho trang thùng rác
 router.delete("/delete-permanent", controller.deletePermanent);
 router.patch("/restore", controller.restore);
+// Hết
+router.get("/create", controller.create);
+router.post("/create", controller.createPost);
 
 module.exports = router;
