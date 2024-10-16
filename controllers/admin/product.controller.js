@@ -1,5 +1,6 @@
 
-const Product = require("../../models/product.model");
+const Product = require("../../models/product.model"); // Khai báo ra form của Product
+const systemConfig = require("../../config/system"); // Khai báo ra đường dẫn cho từ: admin
 module.exports.index = async (req, res) => {
   const find = {
     deleted : false
@@ -253,7 +254,7 @@ module.exports.changePosition = async (req, res) => {
 
 // Tạo trang sản phẩm mới
 module.exports.create = async (req, res) => {
-  res.render("admin/pages/products/create", {
+  res.render(`${systemConfig.prefixAdmin}/pages/products/create`, {
     pageTitle: "Thêm mới sản phẩm"
   });
 }
@@ -261,7 +262,17 @@ module.exports.create = async (req, res) => {
 
 //Submit form tạo mới 1 sản phẩm
 module.exports.createPost = async (req, res) => {
-  console.log(req.body); // lấy dữ liệu từ FE khi bấm nút tạo mới in ra bên BE
-
-  res.send("OK");// trả lại BE gửi lên FE, hiển thị trên màn hình
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);  
+  req.body.stock = parseInt(req.body.stock);
+  const totalRecord = await Product.countDocuments();
+  if(req.body.position){
+    req.body.position = parseInt(req.body.position);
+  } else{
+    req.body.position = totalRecord + 1;
+  }
+  const record = new Product(req.body); // Tạo 1 bản ghi mới
+  await record.save(); // Lưu bản ghi vào CSDL
+  // Đợi lưu xong bản ghi thì chuyển hướng về lại trang sản phẩm
+  res.redirect(`/${systemConfig.prefixAdmin}/products`);
 }
