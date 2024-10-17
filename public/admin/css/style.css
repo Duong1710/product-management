@@ -50,3 +50,27 @@
   z-index: 9999;
 }
 /* End alert-message */
+
+  /*image-preview*/
+  .image-preview {
+    width: 150px;
+    height: auto;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f8f9fa; /* Màu nền nhạt */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển động mượt mà */
+  }
+  
+  /* Hiệu ứng khi người dùng hover vào ảnh */
+  .image-preview:hover {
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Tăng đổ bóng khi hover */
+  }
+  /* Khi không chọn thì không hiển thị gì cả */
+  .image-preview[src=""] {
+    display: none;
+  }
+  /* End image-preview */

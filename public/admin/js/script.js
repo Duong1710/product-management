@@ -394,3 +394,17 @@ if(alertMessage) {
   }, 3000);
 }
 // End alert-message
+
+// Preview ảnh
+const uploadImage = document.querySelector("[upload-image]");
+if(uploadImage){
+    const uploadImageInput = document.querySelector("[upload-image-input]");
+    const uploadImagePreview = document.querySelector("[upload-image-preview]")
+    uploadImageInput.addEventListener("change", () =>{
+        const file = uploadImageInput.files[0]; // xác định file upload lên
+        if(file){
+            uploadImagePreview.src = URL.createObjectURL(file); // tạo ra src ảnh
+        }
+    })
+}
+// Hết preview ảnh
