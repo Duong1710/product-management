@@ -262,23 +262,21 @@ module.exports.create = async (req, res) => {
 
 //Submit form tạo mới 1 sản phẩm
 module.exports.createPost = async (req, res) => {
-  req.body.price = parseInt(req.body.price);
-  req.body.discountPercentage = parseInt(req.body.discountPercentage);  
-  req.body.stock = parseInt(req.body.stock);
-  const totalRecord = await Product.countDocuments();
-  if(req.body.position){
-    req.body.position = parseInt(req.body.position);
-  } else{
+  req.body.price = parseInt(req.body.price); // khi nhập vào giá cả ở dạng string nên phải chuyển sang
+  req.body.discountPercentage = parseInt(req.body.discountPercentage); // tương tự price 
+  req.body.stock = parseInt(req.body.stock); // tương tự price
+  const totalRecord = await Product.countDocuments(); // đếm tổng số sản phẩm
+  if(req.body.position){ // nếu có số thự tự nhập vào
+    req.body.position = parseInt(req.body.position); // tương tự price
+  } else{// nếu ko nhập vào số thứ tự thì nó sẽ chính bằng tổng sản phẩm + 1
     req.body.position = totalRecord + 1;
   }
-  if(req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  if(req.file) { // Nếu có xuất hiện file ảnh thì lưu vào thumbnail
+    req.body.thumbnail = `/uploads/${req.file.filename}`; 
   }
-  console.log(req.file);
-  console.log(req.body);
-
+ 
   const record = new Product(req.body); // Tạo 1 bản ghi mới
   await record.save(); // Lưu bản ghi vào CSDL
   // Đợi lưu xong bản ghi thì chuyển hướng về lại trang sản phẩm
-  res.redirect(`/${systemConfig.prefixAdmin}/products`);
+  res.redirect(`/${systemConfig.prefixAdmin}/products`); // chuyển về lại trang sản phẩm
 }

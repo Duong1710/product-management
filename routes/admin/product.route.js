@@ -12,9 +12,9 @@ const storage = multer.diskStorage({
     }
   });
   
-  const upload = multer({ storage: storage }); // lưu ảnh vào địa chỉ kia
+  const upload = multer({ storage: storage }); // Khởi tạo multer với cấu hình đã tạo, tên là upload, chính là upload tí dùng bên dưới trong createPost
   
-
+const validate = require("../../validate/admin/product.validate");
 const controller = require("../../controllers/admin/product.controller");
 router.get("/", controller.index);
 router.get("/trash", controller.trash);
@@ -26,7 +26,14 @@ router.patch("/change-position", controller.changePosition);
 router.delete("/delete-permanent", controller.deletePermanent);
 router.patch("/restore", controller.restore);
 // Hết
-router.get("/create", controller.create);
-router.post("/create",upload.single('thumbnail'), controller.createPost);
 
+// Đường dẫn cho trang tạo mới
+router.get("/create", controller.create);
+router.post(
+  "/create",
+  upload.single('thumbnail'), 
+  validate.createPost,
+  controller.createPost
+); 
+// Hết
 module.exports = router;
