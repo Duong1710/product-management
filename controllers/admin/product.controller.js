@@ -117,7 +117,7 @@ module.exports.changeMulti = async (req, res) => {
         code: "success"
       });
       // đoạn code mà back end phản hồi lại cho front end khi đã thực hiện click vào button
-      break;  
+      break;
 
     case 'delete-permanent':
       await Product.deleteMany({
@@ -279,4 +279,44 @@ module.exports.createPost = async (req, res) => {
   await record.save(); // Lưu bản ghi vào CSDL
   // Đợi lưu xong bản ghi thì chuyển hướng về lại trang sản phẩm
   res.redirect(`/${systemConfig.prefixAdmin}/products`); // chuyển về lại trang sản phẩm
+}
+// Hết
+
+// Tạo trang chỉnh sửa sản phẩm
+module.exports.edit = async (req, res) => {
+  const id = req.params.id;
+  const product = await Product.findOne({
+    _id : id,
+    deleted : false
+  });
+  res.render(`${systemConfig.prefixAdmin}/pages/products/edit`, {
+    pageTitle: "Chỉnh sửa sản phẩm",
+    product : product
+  });
+}
+// Hết
+
+// Tương tác chỉnh sửa sản phẩm với database
+module.exports.editPatch = async (req, res) => {
+  const id = req.params.id;
+
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+
+  if(req.body.position) {
+    req.body.position = parseInt(req.body.position);
+  }
+
+  if(req.file) {
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  }
+
+  await Product.updateOne({
+    _id: id,
+    deleted: false
+  }, req.body); 
+
+  req.flash("success", "Cập nhật thành công!"); // hiển thị thông báo thành công
+  res.redirect("back"); // quay về trang
 }

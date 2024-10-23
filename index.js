@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 // hết cụm
 require('dotenv').config(); // kết nối .evn
+const methodOverride = require('method-override'); // sử dụng thư viện này để thêm patch trong file html/pug
 const systemConfig = require("./config/system");
 const app = express();
 const port = process.env.PORT; // gọi cổng
@@ -18,6 +19,8 @@ const routeClient = require("./routes/client/index.route"); // Gọi đường d
 // Khai báo biến toàn cục cho file pug
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'))
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

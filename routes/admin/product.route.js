@@ -36,4 +36,17 @@ router.post(
   controller.createPost
 ); 
 // Hết
+
+// Đường dẫn cho trang chỉnh sửa sản phẩm
+router.get("/edit/:id",controller.edit); 
+// Đường dẫn để chỉnh sửa sản phẩm
+router.patch(
+  "/edit/:id",
+  upload.single('thumbnail'), // up ảnh
+  validate.createPost, // validate điều kiện
+  controller.editPatch
+);
+// Hết
+
+
 module.exports = router;
