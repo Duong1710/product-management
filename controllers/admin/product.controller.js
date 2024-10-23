@@ -320,3 +320,15 @@ module.exports.editPatch = async (req, res) => {
   req.flash("success", "Cập nhật thành công!"); // hiển thị thông báo thành công
   res.redirect("back"); // quay về trang
 }
+
+module.exports.detail = async (req, res) => {
+  const id = req.params.id; // params chính là :id trong route đó
+  const product = await Product.findOne({
+    _id : id,
+    deleted : false
+  });
+  res.render(`${systemConfig.prefixAdmin}/pages/products/detail`, {
+    pageTitle: "Chi tiết sản phẩm",
+    product : product
+  });
+}
