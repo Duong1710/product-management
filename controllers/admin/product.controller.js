@@ -298,8 +298,8 @@ module.exports.edit = async (req, res) => {
 
 // Tương tác chỉnh sửa sản phẩm với database
 module.exports.editPatch = async (req, res) => {
-  const id = req.params.id;
-
+  const id = req.params.id; // req.params chính là cái thuộc tính id, chấm vào id thì sẽ ra giá trị
+  // Vì sao req.params lại là id thì mình :id trong route nên máy hiểu là mình tìm id
   req.body.price = parseInt(req.body.price);
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
