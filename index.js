@@ -30,16 +30,16 @@ app.use(bodyParser.json());
 
 //Dùng express-flash
 app.use(cookieParser('JKSLSF'));
-app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 
 // Khai báo đường dẫn
 routeAdmin.index(app)
 routeClient.index(app)
 
-app.use(express.static('public')); // Thiết lập thư mục chứa file tĩnh
+app.use(express.static('${__dirname}/public')); // Thiết lập thư mục chứa file tĩnh
 
-app.set('views', './views') // tìm tđến thư mục tên là views
+app.set('views', '${__dirname}/views') // tìm tđến thư mục tên là views
 app.set('view engine', 'pug') // temlate engine sử dụng: Pugn
 
 
